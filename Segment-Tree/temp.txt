@@ -1,0 +1,7 @@
+khali folder create kora jay na, better emon ekta txt banay rakhbi
+
+ar new folder create korte gele first e root, ba onno kono folder e jabi..then upore create new file dekhbi
+
+otate gia just folder er nam+ backslash dibi, ete auto new folder create hoe jabe
+
+backslash na dile oita just ekta file hoe thakbe
