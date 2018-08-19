@@ -1,5 +1,5 @@
 
-##includeinclude<bits/stdc++.h><bits/stdc+ 
+#include<bits/stdc++.h>
 
 #define fi first
 #define endl '\n'
