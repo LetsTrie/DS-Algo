@@ -21,39 +21,19 @@ int low[MAXN] , dis[MAXN];
 int timer;
 set<pii> st;
 
-
 void FindingBridge(int u , int par = -1) {
-
 	vis[u] = 1;
-
 	dis[u] = low[u] = ++timer; // Initially Discovery Time && Low Time are equal
-
 	FOR(i , (int) G[u].size()) {
-		
 		int v = G[u][i];
-		
 		if(v == par) continue; // v -> u
-		
 		if(!vis[v]) {	
-			
 			FindingBridge(v , u);
-		
 			low[u] = (low[u] > low[v]) ? low[v] : low[u];
-		
-			if(dis[u] < low[v]){
-
-				int mn = (u < v) ? u : v;
-				int mx = (u > v) ? u : v;
-
-				st.insert(pii(mn , mx));
-
-			}
+			if(dis[u] < low[v]) st.insert(pii(u , v));
 		} 
-
-		else if(dis[v] < low[u]) { // Already Visited 
-		
-			low[u] = dis[v];
-
+		else if(dis[v] < dis[u]) { // Already Visited 		
+			low[u] = (dis[v] < low[u]) ? dis[v] : low[u];
 		}
 	}
 }
