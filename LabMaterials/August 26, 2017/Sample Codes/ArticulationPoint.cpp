@@ -21,41 +21,21 @@ int timer;
 bool AP[MAXN];
 
 void FindingAP(int u , int par = -1) {
-
 	vis[u] = 1;
-
 	dis[u] = low[u] = ++timer; // Initially Discovery Times && Low Times are equal
-
 	int child = 0;
-
-	FOR(i , G[u].size()) {
-		
-		int v = G[u][i];
-		
-		if(v == par) continue; // v -> u
-		
+	FOR(i , (int) G[u].size()) {		
+		int v = G[u][i];		
+		if(v == par) continue; // v -> u		
 		if(!vis[v]) {
-
-			++child; //Actual Child which Creates Different SubTree		
-			
+			++child; //Actual Child which Creates Different SubTree					
 			FindingAP(v , u);
-		
 			low[u] = (low[u] > low[v]) ? low[v] : low[u];
-		
-			if(par != -1 && dis[u] <= low[v]) AP[u] = 1;
-		
+			if((par != -1 && dis[u] <= low[v]) || (par == -1 and child > 1) ) AP[u] = 1;
 		} 
-
-		else if(dis[v] < low[u]) { // Already Visited 
-		
-			low[u] = dis[v];
+		else if(dis[v] < dis[u]) { // Already Visited 
+			low[u] = (dis[v] < low[u]) ? dis[v] : low[u];
 		}
-	}
-
-	if(par == -1 and child > 1) { // Special Root Check
-
-		AP[u] = 1;
-
 	}
 }
 
