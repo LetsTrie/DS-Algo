@@ -1,0 +1,12 @@
+LL bigmod(LL a,LL b)
+{
+    LL res=1;
+    a %= b;
+    while(b)
+    {
+        if(b%2) res=(res%MOD*a%MOD)%MOD;
+        b/=2;
+        a=(a%MOD*a%MOD)%MOD;
+    }
+    return res%MOD;
+}
