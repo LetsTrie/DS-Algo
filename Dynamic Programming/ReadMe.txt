@@ -1,8 +1,7 @@
 Some Classical Dynamic Programming Problems :
 
 1) Calculating Fibonacci Number :
-----------------------------------------
-int Fib[30];
+--------------------------------------------------------------
 
 int solve(int n) {
 	if(n == 1 || n == 0) return n;
@@ -10,15 +9,8 @@ int solve(int n) {
 	return Fib[n] = solve(n - 1) + solve(n - 2); 
 }
 
-int main() {
-	mem(Fib, -1);
-	cout << solve(30) << endl;
-}
-
 2) Calculating nCr : 
-----------------------------------------
-
-int nCr[101][101];
+--------------------------------------------------------------
 
 int solve(int n , int r) { // n >= r
 	if(n == r || r == 0) return 1;
@@ -26,10 +18,14 @@ int solve(int n , int r) { // n >= r
 	return nCr[n][r] = solve(n - 1 , r) + solve(n - 1 , r - 1);
 }
 
-int main() {
-	mem(nCr , -1);
-	cout << solve(5 , 3) << endl;
-}
-
 3) 0-1 Knapsack : 
-----------------------------------------
+--------------------------------------------------------------
+
+int solve(int i , int cap) {
+    	if(i == N) return 0;
+    	if(knap[i][cap] != -1) return knap[i][cap]; 
+	LL ans1 = 0 , ans2 = 0;
+	if(cap - weight[i] >= 0) ans1 =price[i] + solve(i + 1 , cap - weight[i]);
+	ans2 = solve(i + 1 , cap); 
+	return knap[i][cap] = max(ans1 , ans2);
+}
