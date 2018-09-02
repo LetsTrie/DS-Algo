@@ -29,3 +29,16 @@ int solve(int i , int cap) {
 	ans2 = solve(i + 1 , cap); 
 	return knap[i][cap] = max(ans1 , ans2);
 }
+
+4) Coin Change : 
+--------------------------------------------------------------
+
+LL solve(int i , int make) { // No of Ways
+	if(i == 5) return (make == 0);
+	if(DP[i][make] != -1) return DP[i][make];
+	LL ret1 = 0 , ret2 = 0;
+	if(make - arr[i] >= 0) ret1 = solve(i , make - arr[i]);
+	ret2 = solve(i + 1 , make);
+	return DP[i][make] = ret1 + ret2;
+}
+
