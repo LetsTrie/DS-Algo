@@ -42,3 +42,13 @@ LL solve(int i , int make) { // No of Ways
 	return DP[i][make] = ret1 + ret2;
 }
 
+5) Longest Common Subsequence : 
+--------------------------------------------------------------
+
+int solve(int i , int j) {
+	if(str1[i] == '\0' || str2[j] == '\0') return 0;
+	if(DP[i][j] != -1) return DP[i][j]; int ret;
+	if(str1[i] == str2[j]) ret = 1 + solve(i + 1 , j + 1);
+	else ret = max(solve(i + 1, j) , solve(i , j + 1));
+	return DP[i][j] = ret;
+}
