@@ -12,7 +12,7 @@ int solve(int n) {
 2) Calculating nCr : 
 --------------------------------------------------------------
 
-int solve(int n , int r) { // n >= r
+int solve(int n , int r) { 
 	if(n == r || r == 0) return 1;
 	if(nCr[n][r] != -1) return nCr[n][r];
 	return nCr[n][r] = solve(n - 1 , r) + solve(n - 1 , r - 1);
@@ -33,7 +33,7 @@ int solve(int i , int cap) {
 4) Coin Change : 
 --------------------------------------------------------------
 
-LL solve(int i , int make) { // No of Ways
+LL solve(int i , int make) {
 	if(i == 5) return (make == 0);
 	if(DP[i][make] != -1) return DP[i][make];
 	LL ret1 = 0 , ret2 = 0;
@@ -50,5 +50,17 @@ int solve(int i , int j) {
 	if(DP[i][j] != -1) return DP[i][j]; int ret;
 	if(str1[i] == str2[j]) ret = 1 + solve(i + 1 , j + 1);
 	else ret = max(solve(i + 1, j) , solve(i , j + 1));
+	return DP[i][j] = ret;
+}
+
+6) Edit Distance :
+--------------------------------------------------------------
+
+int solve(int i , int j) {
+	if(i == len1) return len2 - j;
+	if(j == len2) return len1 - i;
+	if(DP[i][j] != -1) return DP[i][j]; int ret = 0;
+	if(str1[i] == str2[j]) ret = solve(i + 1 , j + 1);
+	else ret = 1 + min( solve(i , j + 1) , min(solve(i + 1 , j) , solve(i + 1 , j + 1)) );
 	return DP[i][j] = ret;
 }
