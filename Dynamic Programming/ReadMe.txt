@@ -22,8 +22,8 @@ int solve(int n , int r) {
 --------------------------------------------------------------
 
 int solve(int i , int cap) {
-    	if(i == N) return 0;
-    	if(knap[i][cap] != -1) return knap[i][cap]; 
+  if(i == N) return 0;
+  if(knap[i][cap] != -1) return knap[i][cap]; 
 	LL ans1 = 0 , ans2 = 0;
 	if(cap - weight[i] >= 0) ans1 =price[i] + solve(i + 1 , cap - weight[i]);
 	ans2 = solve(i + 1 , cap); 
@@ -64,3 +64,18 @@ int solve(int i , int j) {
 	else ret = 1 + min( solve(i , j + 1) , min(solve(i + 1 , j) , solve(i + 1 , j + 1)) );
 	return DP[i][j] = ret;
 }
+
+7) Minimum Vertex Cover Problem : 
+--------------------------------------------------------------
+int solve(int u, int Flag , int par = -1) {
+	if(DP[u][Flag] != -1) return DP[u][Flag]; 
+	int sum = 0;
+	for(int v : G[u]) {
+		if(v != par) {
+			if(Flag) sum += min(solve(v , 1, u) , solve(v , 0, u)) ;
+			else sum += solve(v , 1, u);  
+		}
+	}
+	return DP[u][Flag] = sum + Flag;
+}
+
