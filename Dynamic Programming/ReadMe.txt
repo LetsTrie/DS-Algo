@@ -1,7 +1,7 @@
 Some Classical Dynamic Programming Problems :
 
 1) Calculating Fibonacci Number :
---------------------------------------------------------------
+---------------------------------------------------------------
 
 int solve(int n) {
 	if(n == 1 || n == 0) return n;
