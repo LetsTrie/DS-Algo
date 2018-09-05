@@ -69,11 +69,11 @@ Edit Distance : (Iterative)
 --------------------------------------------------------------
 
 for(int i = 0 ; i <= len1 ; i++) {
-		for(int j = 0 ; j <= len2 ; j++) {
-				if(i == 0 || j == 0) DP[i][j] = i + j;
-				else if(str1[i - 1] == str2[j - 1]) DP[i][j] = DP[i - 1][j - 1];
-				else DP[i][j] = 1 + min(DP[i - 1][j] , min(DP[i - 1][j - 1] , DP[i][j - 1]));
-		}
+	for(int j = 0 ; j <= len2 ; j++) {
+		if(i == 0 || j == 0) DP[i][j] = i + j;
+		else if(str1[i - 1] == str2[j - 1]) DP[i][j] = DP[i - 1][j - 1];
+		else DP[i][j] = 1 + min(DP[i - 1][j] , min(DP[i - 1][j - 1] , DP[i][j - 1]));
+	}
 }
 
 7) Minimum Vertex Cover Problem : 
