@@ -42,7 +42,7 @@ LL solve(int i , int make) {
 	return DP[i][make] = ret1 + ret2;
 }
 
-5) Longest Common Subsequence : 
+5) Longest Common Subsequence :  (Recursive)
 --------------------------------------------------------------
 
 int solve(int i , int j) {
@@ -51,6 +51,15 @@ int solve(int i , int j) {
 	if(str1[i] == str2[j]) ret = 1 + solve(i + 1 , j + 1);
 	else ret = max(solve(i + 1, j) , solve(i , j + 1));
 	return DP[i][j] = ret;
+}
+
+Longest Common Subsequence :  (Iterative)
+--------------------------------------------------------------
+
+FOR(i , len1 + 1) FOR(j , len2 + 1) {
+	if(i == 0 || j == 0) DP[i][j] = 0;
+	else if(str1[i - 1] == str2[j - 1]) DP[i][j] = DP[i - 1][j - 1] + 1;
+	else DP[i][j] = max(DP[i - 1][j] , DP[i][j - 1]);
 }
 
 6) Edit Distance : (Recursive)
@@ -68,12 +77,10 @@ int solve(int i , int j) {
 Edit Distance : (Iterative)
 --------------------------------------------------------------
 
-for(int i = 0 ; i <= len1 ; i++) {
-	for(int j = 0 ; j <= len2 ; j++) {
-		if(i == 0 || j == 0) DP[i][j] = i + j;
-		else if(str1[i - 1] == str2[j - 1]) DP[i][j] = DP[i - 1][j - 1];
-		else DP[i][j] = 1 + min(DP[i - 1][j] , min(DP[i - 1][j - 1] , DP[i][j - 1]));
-	}
+FOR(i , len1 + 1) FOR(j , len2 + 1) {
+	if(i == 0 || j == 0) DP[i][j] = i + j;
+	else if(str1[i - 1] == str2[j - 1]) DP[i][j] = DP[i - 1][j - 1];
+	else DP[i][j] = 1 + min(DP[i - 1][j] , min(DP[i - 1][j - 1] , DP[i][j - 1]));
 }
 
 7) Minimum Vertex Cover Problem : 
