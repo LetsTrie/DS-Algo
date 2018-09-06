@@ -62,6 +62,19 @@ FOR(i , len1 + 1) FOR(j , len2 + 1) {
 	else DP[i][j] = max(DP[i - 1][j] , DP[i][j - 1]);
 }
 
+Print:
+--------------------------------------------------------------
+
+int idx = DP[len1][len2];
+int i = len1 , j = len2;
+while(i > 0 && j > 0) {
+	if(str1[i - 1] == str2[j - 1]) Print[--idx] = str1[i - 1] , i-- , j--;
+	else if(DP[i - 1][j] > DP[i][j - 1]) i--;
+	else j--;
+}
+FOR(i , DP[len1][len2]) printf("%c", Print[i]); puts("");
+
+
 6) Edit Distance : (Recursive)
 --------------------------------------------------------------
 
