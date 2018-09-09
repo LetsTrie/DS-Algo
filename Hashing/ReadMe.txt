@@ -62,7 +62,7 @@ void inverse() {
     LL power1 = 1;
     LL power2 = 1;
 
-    for(int i = 0 ; i <= lent ; i++) {
+    for(int i = 0 ; i < MAXN ; i++) {
         inv[0][i] = modinv(power1 , M[0]) % M[0];
         inv[1][i] = modinv(power2 , M[1]) % M[1];
         power1 = (power1 * P[0]) % M[0];
@@ -73,7 +73,7 @@ void inverse() {
 void setB() {
     B[0][0] = B[1][0] = 1;
 
-    for(int i = 1 ; i <= lent ; i++) {
+    for(int i = 1 ; i < MAXN ; i++) {
         B[0][i] = (B[0][i - 1] * P[0]) % M[0];
         B[1][i] = (B[1][i - 1] * P[1]) % M[1]; // Str[0] * B^1
     }
@@ -131,9 +131,6 @@ pair<LL,LL> i2jFor(int i , int j) {
 }
 
 int solve() {
-
-    inverse();
-    setB(); /// s[0] * B^1
     ForHash();
     //RevHash();
     pair<LL, LL> pH = PatternHash();
@@ -154,7 +151,8 @@ int main() {
 	freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 #endif
-
+	inverse();
+    setB(); /// s[0] * B^1
 	int test;
 	si(test);
 	while(test--) {
