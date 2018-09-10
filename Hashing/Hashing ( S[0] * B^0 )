@@ -1,0 +1,122 @@
+#include<bits/stdc++.h>
+
+#define fi first
+#define endl '\n'
+#define se second
+#define LL long long
+#define pb push_back
+#define vi vector<int>
+#define pl pair<LL , LL>
+#define EPS (double)1e-8
+#define pii pair<int , int>
+#define sz(x) (int) x.size()
+#define sl(x) scanf("%lld",&x)
+#define sii(x, y) si(x) , si(y)
+#define all(x) (x).begin() , (x).end()
+#define lg2(X) (31 - __builtin_clz(X))
+#define llg2(X) (63 - __builtin_clzll(X))
+#define rall(x) (x).rbegin() , (x).rend()
+#define siii(x, y, z) si(x) , si(y) , si(z)
+#define mem(a , b) memset((a), (b), sizeof(a))
+#define FOR(i , n) for(int i = 0 ; i < n ; i++)
+#define FOR1(i , n) for(int i = 1 ; i <= n ; i++)
+#define _ceil(n, a) ((n)%(a)==0?((n)/(a)):((n)/(a)+1))
+#define mlr int mid = (lo + hi) / 2 , l = node << 1 , r = l | 1 // 1 based
+#define itr(it, X) for (__typeof((X).begin()) it = (X).begin(); it != (X).end(); it++)
+template <typename T> T si(T &n){n = 0;bool neg = false;char c = getchar();while( c < '0' || c > '9'){if(c == '-') neg = true;c = getchar();}while(c >= '0' && c <= '9'){n = n*10 + c-48;c = getchar();}if(neg) n = ~(n-1);return n;}
+// Don't Use this I/O in EOF 
+using namespace std;
+//Edges Can Be Zero (Specially in Tree)
+const int MAXN = 1000003;
+//const int MOD  = 100000000;
+const LL inf  = 1 << 30; 
+/*
+int fx[] = {1 , 0 , -1 , 0}; //, 1 , 1 , -1 , -1};
+int fy[] = {0 , 1 , 0 , -1}; //, 1 , -1 , 1 , -1};
+*/
+const int M[] = {2078526727, 2117566807};
+const int P[] = {1572872831, 1971536491};
+
+LL H[MAXN];
+int lent , lenp;
+char text[MAXN], pat[MAXN];
+LL _one , _zero;
+
+LL bigmod(LL a , LL b , LL mod) {
+    a %= mod;
+    LL res = 1;
+    while(b) {
+        if(b & 1) res = (res * a) % mod;
+        b /= 2;
+        a = (a * a) % mod;
+    }
+    return res % mod;
+}
+
+LL modinv(LL a , LL mod) {
+    return bigmod(a , mod - 2 , mod) % mod;
+}
+
+pl PatternHashValue(char *pat, int lenp) {
+	
+	LL value1 = 0 , value2 = 0;
+	LL base1 = 1 , base2 = 1;
+	
+	for(int i = 0 ; i < lenp ; i++) {
+		value1 = (value1 + (pat[i] * base1) % M[0]) % M[0];
+		value2 = (value2 + (pat[i] * base2) % M[1]) % M[1];
+
+		base1 = (base1 * P[0]) % M[0];
+		base2 = (base2 * P[1]) % M[1];
+	}
+	return pl(value1 , value2);
+}
+
+void solve() {
+
+	pl patHash  = PatternHashValue(pat  , lenp);
+	pl textHash = PatternHashValue(text , lenp);
+	
+	int cnt = 0;
+	if(textHash.fi == patHash.fi && textHash.se == patHash.se) cnt++;
+	
+	LL base1 = 1 , base2 = 1;
+	for(int i = 1 ; i < lenp ; i++) base1 = (base1 * P[0]) % M[0] , base2 = (base2 * P[1]) % M[1];
+	
+	for(int i = lenp ; i < lent ; i++) {
+
+		textHash.fi = ( textHash.fi - text[i - lenp] + M[0] ) % M[0];
+		textHash.fi = ( textHash.fi + M[0] ) % M[0]; 
+		textHash.fi = ( textHash.fi * _zero % M[0] ) % M[0];
+		textHash.fi = ( textHash.fi + ( text[i] * base1) % M[0]) % M[0];
+
+		textHash.se = ( textHash.se - text[i - lenp] + M[1] ) % M[1]; 
+		textHash.se = ( textHash.se + M[1] ) % M[1];
+		textHash.se = ( textHash.se * _one % M[1] ) % M[1];
+		textHash.se = ( textHash.se + ( text[i] * base2) % M[1]) % M[1];
+
+		if(textHash.fi == patHash.fi && textHash.se == patHash.se) cnt++;
+	}
+	
+	printf("%d\n", cnt);
+}
+
+
+int main() {	
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	//freopen("output.txt", "w", stdout);
+#endif
+	_zero = modinv(P[0] , M[0]);
+	_one  = modinv(P[1] , M[1]); 
+	int test;
+	si(test);
+	while(test--) {
+		scanf("%s",pat);
+		scanf("%s",text);
+		lent = strlen(text);
+		lenp = strlen(pat);
+		solve();
+	}
+}
