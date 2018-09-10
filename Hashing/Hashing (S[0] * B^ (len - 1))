@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+
+#define fi first
+#define endl '\n'
+#define se second
+#define LL long long
+#define pb push_back
+#define vi vector<int>
+#define pl pair<LL , LL>
+#define EPS (double)1e-8
+#define pii pair<int , int>
+#define sz(x) (int) x.size()
+#define sl(x) scanf("%lld",&x)
+#define sii(x, y) si(x) , si(y)
+#define all(x) (x).begin() , (x).end()
+#define lg2(X) (31 - __builtin_clz(X))
+#define llg2(X) (63 - __builtin_clzll(X))
+#define rall(x) (x).rbegin() , (x).rend()
+#define siii(x, y, z) si(x) , si(y) , si(z)
+#define mem(a , b) memset((a), (b), sizeof(a))
+#define FOR(i , n) for(int i = 0 ; i < n ; i++)
+#define FOR1(i , n) for(int i = 1 ; i <= n ; i++)
+#define _ceil(n, a) ((n)%(a)==0?((n)/(a)):((n)/(a)+1))
+#define mlr int mid = (lo + hi) / 2 , l = node << 1 , r = l | 1 // 1 based
+#define itr(it, X) for (__typeof((X).begin()) it = (X).begin(); it != (X).end(); it++)
+template <typename T> T si(T &n){n = 0;bool neg = false;char c = getchar();while( c < '0' || c > '9'){if(c == '-') neg = true;c = getchar();}while(c >= '0' && c <= '9'){n = n*10 + c-48;c = getchar();}if(neg) n = ~(n-1);return n;}
+// Don't Use this I/O in EOF 
+using namespace std;
+//Edges Can Be Zero (Specially in Tree)
+const int MAXN = 1000005;
+//const int MOD  = 100000000;
+const LL inf  = 1 << 30; 
+/*
+int fx[] = {1 , 0 , -1 , 0}; //, 1 , 1 , -1 , -1};
+int fy[] = {0 , 1 , 0 , -1}; //, 1 , -1 , 1 , -1};
+*/
+//shafaetsplanet Rolling Hash Code
+// Hash(s)=  (s[0]*B^(m−1) + s[1]*B^(m−2) + ..... + s[m−1]*B^(1) + s[m−1]*B^(0) ) % MOD
+
+const int M[] = {2078526727, 2117566807};
+const int B[] = {1572872831, 1971536491};
+char pat[MAXN], text[MAXN];
+
+
+pl hashValue(char *str, int len) {
+	
+	LL h1 = 0 , h2 = 0 , power1 = 1 , power2 = 1;
+	
+	for(int i = len - 1 ; i >= 0 ; i--) {
+		
+		h1 = (h1 + (str[i] * power1) % M[0]) % M[0];
+		power1 = ( power1 * B[0] ) % M[0];
+		
+		h2 = (h2 + (str[i] * power2) % M[1]) % M[1];
+		power2 = ( power2 * B[1] ) % M[1];
+	}
+	
+	return pl(h1 , h2);
+} 
+
+int solve(char *text, int len1 , char *pat, int len2) {
+	
+	if(len1 < len2 || len1 == 0 || len2 == 0) return 0;
+	
+	LL power1 = 1, power2 = 1;
+	for(int i = 1 ; i <= len2 - 1; i++) power1 = (power1 * B[0]) % M[0] , power2 = (power2 * B[1]) % M[1];
+	
+	pl hashText = hashValue(text , len2);
+	pl hashPat = hashValue(pat, len2);
+	
+	int cnt = 0;
+
+	if(hashPat.fi == hashText.fi && hashText.se == hashPat.se) cnt++;
+
+	for(int i = len2 ; i < len1 ; i++) {
+
+		hashText.fi = (hashText.fi - (power1 * text[i - len2]) % M[0]) % M[0];
+		hashText.fi = (hashText.fi + M[0]) % M[0];
+		hashText.fi = (hashText.fi * B[0]) % M[0];
+		hashText.fi = (hashText.fi + text[i]) % M[0];
+
+
+		hashText.se = (hashText.se - (power2 * text[i - len2]) % M[1]) % M[1];
+		hashText.se = (hashText.se + M[1]) % M[1];
+		hashText.se = (hashText.se * B[1]) % M[1];
+		hashText.se = (hashText.se + text[i]) % M[1];
+
+		if(hashPat.fi == hashText.fi && hashText.se == hashPat.se) cnt++;
+	}
+	return cnt;
+}
+
+int main() {
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	//freopen("output.txt", "w", stdout);
+#endif
+	int test , ks = 1;
+	si(test);
+	while(test--) {
+		scanf("%s",text);
+		scanf("%s",pat);
+		int len1 = strlen(text);
+		int len2 = strlen(pat);
+		printf("Case %d: %d\n" , ks++, solve(text , len1 , pat , len2));
+	} 
+}
