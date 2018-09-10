@@ -6,7 +6,7 @@
 #define LL long long
 #define pb push_back
 #define vi vector<int>
-#define pll pair<LL , LL>
+#define pl pair<LL , LL>
 #define EPS (double)1e-8
 #define pii pair<int , int>
 #define sz(x) (int) x.size()
@@ -85,7 +85,7 @@ void setB() {
     }
 }
 
-void ForHash() { // OKAY
+void ForHash(char *text , int lent) { // OKAY
 
     H[0][0] = H[1][0] = 0;
 
@@ -96,9 +96,9 @@ void ForHash() { // OKAY
 
 }
 
-// LL RH[3][MAXN];
+// LL RH[2][MAXN];
 
-// void RevHash() { // OKAY
+// void RevHash(char *text , int lent) { // OKAY
 
 //     RH[0][0] = RH[1][0] = 0;
 
@@ -109,7 +109,7 @@ void ForHash() { // OKAY
 
 // }
 
-pll i2jFor(int i , int j) { //Verified
+pl i2jFor(int i , int j) { //Verified
     LL value1 = (H[0][j + 1] - H[0][i] + M[0])% M[0];
     LL value2 = (H[1][j + 1] - H[1][i] + M[1])% M[1];
     value1 = (value1 * inv[0][i] + M[0]) % M[0];
@@ -117,7 +117,7 @@ pll i2jFor(int i , int j) { //Verified
     return make_pair(value1, value2);    
 }
 
-// pll i2jRev(int i , int j) { //OKAY
+// pl i2jRev(int i , int j) { //OKAY
 //     LL value1 = (RH[0][j + 1] - RH[0][i] + M[0])% M[0];
 //     LL value2 = (RH[1][j + 1] - RH[1][i] + M[1])% M[1];
 //     value1 = (value1 * inv[0][lent - j - 1] + M[0]) % M[0];
@@ -125,7 +125,7 @@ pll i2jFor(int i , int j) { //Verified
 //     return make_pair(value1, value2); 
 // }
 
-pll PatternHash() {
+pl PatternHash(char *pat , int lenp) {
 
     LL p1 = 0, p2 = 0;
     for(int i = 1 ; i <= lenp ; i++) {
@@ -136,13 +136,13 @@ pll PatternHash() {
 }
 
 
-void solve() {
-    ForHash();
-    //RevHash();
-    pair<LL, LL> pH = PatternHash();
+void solve(char *text , int lent , char *pat , int lenp) {
+    ForHash(text , lent);
+    //RevHash(text , lent);
+    pl pH = PatternHash(pat , lenp);
     int cnt = 0;
     for(int i = 0 ; i + lenp - 1 < lent; i++) {
-    	pll X = i2jFor(i , i + lenp - 1);
+    	pl X = i2jFor(i , i + lenp - 1);
     	if(X.fi == pH.fi && X.se == pH.se) cnt++;
     }
 
@@ -165,6 +165,6 @@ int main() {
 		scanf("%s",text);
 		lent = strlen(text);
 		lenp = strlen(pat);
-		solve();
+		solve(text , lent , pat , lenp);
 	}
 }
