@@ -6,7 +6,7 @@
 #define LL long long
 #define pb push_back
 #define vi vector<int>
-#define pl pair<LL , LL>
+#define pll pair<LL , LL>
 #define EPS (double)1e-8
 #define pii pair<int , int>
 #define sz(x) (int) x.size()
@@ -27,7 +27,7 @@ template <typename T> T si(T &n){n = 0;bool neg = false;char c = getchar();while
 // Don't Use this I/O in EOF 
 using namespace std;
 //Edges Can Be Zero (Specially in Tree)
-const int MAXN = 100003;
+const int MAXN = 1000003;
 //const int MOD  = 100000000;
 const LL inf  = 1 << 30; 
 /*
@@ -37,11 +37,17 @@ int fy[] = {0 , 1 , 0 , -1}; //, 1 , -1 , 1 , -1};
 const int M[] = {2078526727, 2117566807};
 const int P[] = {1572872831, 1971536491};
 
+/*
+-----------------------------------------------------------------------------------------
+Dont Use It When ML is 32/64 MB. High Possibility of getting MLE when len <= 1000000
+-----------------------------------------------------------------------------------------
+*/
+
 LL inv[3][MAXN];
 LL B[3][MAXN];
 LL H[3][MAXN];
-int len;
-char str[MAXN], pat[MAXN];
+int lent , lenp;
+char text[MAXN], pat[MAXN];
 
 LL bigmod(LL a , LL b , LL mod) {
     a %= mod;
@@ -79,49 +85,31 @@ void setB() {
     }
 }
 
-void ForHash() {
+void ForHash() { // OKAY
 
     H[0][0] = H[1][0] = 0;
 
-    for(int i = 1 ; i <= len ; i++) {
-        H[0][i] = (H[0][i - 1] + (str[i - 1] * B[0][i]) % M[0] ) % M[0];
-        H[1][i] = (H[1][i - 1] + (str[i - 1] * B[1][i]) % M[1] ) % M[1];  // Str[0] * B^1 
+    for(int i = 1 ; i <= lent ; i++) {
+        H[0][i] = (H[0][i - 1] + (text[i - 1] * B[0][i]) % M[0] ) % M[0];
+        H[1][i] = (H[1][i - 1] + (text[i - 1] * B[1][i]) % M[1] ) % M[1];  // text[0] * B^1 
     }
 
 }
 
-LL RH[3][MAXN];
+// LL RH[3][MAXN];
 
-void RevHash() { 
+// void RevHash() { // OKAY
 
-    RH[0][0] = RH[1][0] = 0;
+//     RH[0][0] = RH[1][0] = 0;
 
-    for(int i = 1; i <= len ; i++) {
-        RH[0][i] = (RH[0][i - 1] + (str[i - 1] * B[0][len - i + 1]) % M[0] ) % M[0];
-        RH[1][i] = (RH[1][i - 1] + (str[i - 1] * B[1][len - i + 1]) % M[1] ) % M[1];  // str[0] * B^len
-    }
-
-}
-
-pair<LL,LL> i2jRev(int i , int j) { 
-    LL value1 = (RH[0][j + 1] - RH[0][i] + M[0])% M[0];
-    LL value2 = (RH[1][j + 1] - RH[1][i] + M[1])% M[1];
-    value1 = (value1 * inv[0][len - j - 1] + M[0]) % M[0];
-    value2 = (value2 * inv[1][len - j - 1] + M[1]) % M[1];
-    return make_pair(value1, value2); 
-}
-
-// pair<LL,LL> PatternHash() {
-
-//     LL p1 = 0, p2 = 0;
-//     for(int i = 1 ; i <= lenp ; i++) {
-//         p1 = ( p1 + (pat[i - 1] * B[0][i]) % M[0] ) % M[0];
-//         p2 = ( p2 + (pat[i - 1] * B[1][i]) % M[1] ) % M[1];
+//     for(int i = 1; i <= lent ; i++) {
+//         RH[0][i] = (RH[0][i - 1] + (text[i - 1] * B[0][lent - i + 1]) % M[0] ) % M[0];
+//         RH[1][i] = (RH[1][i - 1] + (text[i - 1] * B[1][lent - i + 1]) % M[1] ) % M[1];  // text[0] * B^len
 //     }
-//     return make_pair(p1 , p2);
+
 // }
 
-pair<LL,LL> i2jFor(int i , int j) { 
+pll i2jFor(int i , int j) { //Verified
     LL value1 = (H[0][j + 1] - H[0][i] + M[0])% M[0];
     LL value2 = (H[1][j + 1] - H[1][i] + M[1])% M[1];
     value1 = (value1 * inv[0][i] + M[0]) % M[0];
@@ -129,10 +117,36 @@ pair<LL,LL> i2jFor(int i , int j) {
     return make_pair(value1, value2);    
 }
 
+// pll i2jRev(int i , int j) { //OKAY
+//     LL value1 = (RH[0][j + 1] - RH[0][i] + M[0])% M[0];
+//     LL value2 = (RH[1][j + 1] - RH[1][i] + M[1])% M[1];
+//     value1 = (value1 * inv[0][lent - j - 1] + M[0]) % M[0];
+//     value2 = (value2 * inv[1][lent - j - 1] + M[1]) % M[1];
+//     return make_pair(value1, value2); 
+// }
+
+pll PatternHash() {
+
+    LL p1 = 0, p2 = 0;
+    for(int i = 1 ; i <= lenp ; i++) {
+        p1 = ( p1 + (pat[i - 1] * B[0][i]) % M[0] ) % M[0];
+        p2 = ( p2 + (pat[i - 1] * B[1][i]) % M[1] ) % M[1];
+    }
+    return make_pair(p1 , p2);
+}
+
+
 void solve() {
     ForHash();
-    RevHash();
-    // pair<LL, LL> pH = PatternHash();
+    //RevHash();
+    pair<LL, LL> pH = PatternHash();
+    int cnt = 0;
+    for(int i = 0 ; i + lenp - 1 < lent; i++) {
+    	pll X = i2jFor(i , i + lenp - 1);
+    	if(X.fi == pH.fi && X.se == pH.se) cnt++;
+    }
+
+    printf("%d\n", cnt);
     
 }
 
@@ -144,13 +158,13 @@ int main() {
 #endif
 	inverse();
     setB();
-	while(scanf("%s",str) != EOF) {
-		len = strlen(str);
+	int test;
+	si(test);
+	while(test--) {
+		scanf("%s",pat);
+		scanf("%s",text);
+		lent = strlen(text);
+		lenp = strlen(pat);
 		solve();
 	}
 }
-
-/*
-apatpat
-pat
-*/
