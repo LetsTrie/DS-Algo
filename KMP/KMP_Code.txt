@@ -1,0 +1,33 @@
+// Failure Function
+
+		int F[lenp + 2];
+		mem(F , 0);
+		for(int i = 2 ; i <= lenp ; i++) {
+			int j = F[i - 1];
+			while(true) {
+				if(pat[j] == pat[i - 1]) {
+					F[i] = j + 1;
+					break;
+				}
+				if(j == 0) {
+					F[i] = 0;
+					break;
+				}
+				j = F[j];
+			}
+		}
+
+		//Query
+
+		vector<int> v;
+		for(int i = 0 , j = 0 ; i < lent; ) {
+			if(text[i] == pat[j]) i++ , j++;
+			else {
+				if(j == 0) i++;
+				else j = F[j];
+			}
+			if(j == lenp) {
+				v.pb(i);
+				j = F[j];
+			}
+		}
