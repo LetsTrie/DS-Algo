@@ -26,7 +26,7 @@
 template <typename T> T si(T &n){n = 0;bool neg = false;char c = getchar();while( c < '0' || c > '9'){if(c == '-') neg = true;c = getchar();}while(c >= '0' && c <= '9'){n = n*10 + c-48;c = getchar();}if(neg) n = ~(n-1);return n;}
 // Don't Use this I/O in EOF 
 using namespace std;
-//Edges Can Be Zero (Specially in Tree)
+// Edges Can Be Zero (Specially in Tree)
 const int MAXN = 1002;
 const int MOD  = 7901;
 // const LL inf  = 1 << 30; 
