@@ -28,7 +28,7 @@ template <typename T> T si(T &n){n = 0;bool neg = false;char c = getchar();while
 using namespace std;
 // Edges Can Be Zero (Specially in Tree)
 const int MAXN = 1002;
-const int MOD  = 7901;
+// const int MOD  = 7901;
 // const LL inf  = 1 << 30; 
 
 // int fx[] = {1 , 0 , -1 , 0}; //, 1 , 1 , -1 , -1};
@@ -56,5 +56,5 @@ int main() {
 	//freopen("output.txt", "w", stdout);
 #endif
 	
-	
+
 }
