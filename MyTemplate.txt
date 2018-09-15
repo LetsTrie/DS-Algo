@@ -27,7 +27,7 @@ template <typename T> T si(T &n){n = 0;bool neg = false;char c = getchar();while
 // Don't Use this I/O in EOF 
 using namespace std;
 // Edges Can Be Zero (Specially in Tree)
-const int MAXN = 1002;
+const int MAXN = 50002;
 // const int MOD  = 7901;
 // const LL inf  = 1 << 30; 
 
@@ -48,6 +48,8 @@ const int MAXN = 1002;
 //     return res % mod;
 // }
 
+/************************************** Code Starts **************************************/ 
+
 
 int main() {	
 
@@ -56,5 +58,5 @@ int main() {
 	//freopen("output.txt", "w", stdout);
 #endif
 	
-
+	
 }
