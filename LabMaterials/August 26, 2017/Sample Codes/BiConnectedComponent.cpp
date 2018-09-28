@@ -1,78 +1,76 @@
 #include<bits/stdc++.h>
-
-#define fi first
-#define se second
-#define MAXN 500005
-#define pb push_back
-#define pii pair<int,int> 
-
-#define FOR(i , n)  for(int i = 0 ; i < n  ; i++)
-#define FOR1(i , n) for(int i = 1 ; i <= n ; i++)
-
 using namespace std;
 
-vector<int> G[MAXN];
-bool vis[MAXN];
-int low[MAXN] , dis[MAXN];
-int timer;
-vector<pii> BCC[MAXN];
-int idx;
-stack<pii> st;
+#define N 100010
+#define pii pair<int, int>
+#define fi first
+#define se second
 
-void Bcomp(int u , int par = -1) {
+vector<pii> Bcc[N];
+vector<int> G[N];
+stack<pii> st;
+bool vis[N];
+int dis[N];
+int low[N];
+int timer;
+int idx; 
+
+void BiconnectedComponents(int u , int par = -1) {
 	vis[u] = 1;
-	low[u] = dis[u] = ++timer;
+	dis[u] = low[u] = ++timer;
 	int child = 0;
-	FOR(i , (int) G[u].size()) {
+	for(int i = 0; i < (int) G[u].size(); ++i) {
 		int v = G[u][i];
 		if(v == par) continue;
 		if(!vis[v]) {
-			child++;
-			st.push(pii(u , v));
-			Bcomp(v , u);
-			low[u] = (low[u] > low[v]) ? low[v] : low[u];
+			++child;
+			st.push(make_pair(u , v));
+			BiconnectedComponents(v , u);
+			low[u] = min(low[u], low[v]);
 			if((par != -1 && dis[u] <= low[v]) || (par == -1 && child > 1)) {
-				while( !(st.top().fi == u && st.top().se == v) ) {
-					BCC[idx].pb(pii(st.top().fi , st.top().se));
+				while(st.top().fi != u && st.top().se != v) {
+					Bcc[idx].push_back(make_pair(st.top().fi , st.top().se));
 					st.pop();
-				} 
-				BCC[idx++].pb(pii(st.top().fi , st.top().se));
+				}
+				Bcc[idx++].push_back(make_pair(st.top().fi , st.top().se));
 				st.pop();
 			}
 		} else if(dis[u] > dis[v]) {
-			st.push(pii(u , v));
-			low[u] = (low[u] > dis[v]) ? dis[v] : low[u];
+			low[u] = min(low[u], dis[v]);
+			st.push(make_pair(u , v));
 		}
 	}
 }
 
 int main()
-{   
-    int vertex , edge;
-    scanf("%d %d",&vertex, &edge);
+{
+	int v, e;
+	scanf("%d %d", &v, &e);
+	
+	for(int i = 0; i < e; ++i) {
+		int x, y;
+		scanf("%d %d", &x, &y);
+		G[x].push_back(y);
+		G[y].push_back(x);
+	}
 
-    FOR(i , edge) {
-    	int x , y;
-    	scanf("%d %d",&x, &y);
-    	G[x].pb(y) , G[y].pb(x);
-    }
+	for(int i = 0; i < v; ++i) {
+		if(vis[i] == 0) {
+			BiconnectedComponents(i);
+			bool checker = 0;
+			while(!st.empty()) {
+				Bcc[idx].push_back(pii(st.top().fi , st.top().se));
+				st.pop();
+				checker = 1;
+			}
+			if(checker) idx++;
+		}
+	}
 
-    FOR(i , vertex) {
-    	if(!vis[i]) {
-    		Bcomp(i);
-    		bool checker = 0;
-    		while(!st.empty()) {
-    			BCC[idx].pb(pii(st.top().fi , st.top().se));
-				st.pop(); checker = 1;
-    		}
-    		if(checker) idx++;
-    	}
-    }
-    
-    FOR(i , idx) {
-    	printf("%dth Component is:\n", i + 1);
-    	FOR(j , (int) BCC[i].size()) {
-    		printf("%d %d\n", BCC[i][j].fi , BCC[i][j].se);
-    	}
-    }
+	for(int i = 0; i < idx; ++i) {
+		printf("%dth Component is\n", i + 1);
+		for(int j = 0; j < (int) Bcc[i].size(); ++j) {
+			printf("%d %d\n", Bcc[i][j].fi, Bcc[i][j].se);
+		}
+	}
 }
