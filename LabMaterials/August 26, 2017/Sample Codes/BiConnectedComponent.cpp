@@ -9,10 +9,6 @@
 #define FOR(i , n)  for(int i = 0 ; i < n  ; i++)
 #define FOR1(i , n) for(int i = 1 ; i <= n ; i++)
 
-template <typename T> T si(T &n){n = 0;bool negative = false;char c = getchar();while( c < '0' || c > '9'){if(c == '-') negative = true;c = getchar();}while(c >= '0' && c <= '9'){n = n*10 + c-48;c = getchar();}if(negative) n = ~(n-1);return n;}
-#define sii(x , y) si(x), si(y)
-#define siii(x , y , z) si(x) , si(y) , si(z) 
-
 using namespace std;
 
 vector<int> G[MAXN];
@@ -53,13 +49,12 @@ void Bcomp(int u , int par = -1) {
 int main()
 {   
     int vertex , edge;
-    sii(vertex , edge);
+    scanf("%d %d",&vertex, &edge);
 
     FOR(i , edge) {
     	int x , y;
-    	sii(x , y);
-    	G[x].pb(y);
-    	G[y].pb(x);
+    	scanf("%d %d",&x, &y);
+    	G[x].pb(y) , G[y].pb(x);
     }
 
     FOR(i , vertex) {
