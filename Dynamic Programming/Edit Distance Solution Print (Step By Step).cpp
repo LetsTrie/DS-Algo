@@ -27,16 +27,16 @@ int main(){
                 j-- ;
             }
             else if(i > 0 && j > 0 && dp[i][j] == dp[i - 1][j - 1] + 1) {
-                printf("C%c%02d",str2[j - 1], i);
+                printf("Replace %c%02d\n",str2[j - 1], i);
                 i--;
                 j--;
             }
             else if(i > 0 && dp[i][j] == dp[i - 1][j] + 1) {
-                printf("D%c%02d",str1[i - 1], i);
+                printf("Delete %c%02d\n",str1[i - 1], i);
                 i--;
             }
             else if(j > 0 && dp[i][j] == dp[i][j - 1] + 1) {
-                printf("I%c%02d",str2[j - 1], i + 1);
+                printf("Insert %c%02d\n",str2[j - 1], i + 1);
                 j--;
             }
         }
