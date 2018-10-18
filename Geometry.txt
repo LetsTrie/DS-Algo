@@ -1,0 +1,105 @@
+#include<bits/stdc++.h>
+#define pb              push_back
+#define LL          	long long
+#define INF         	1200000000
+#define si(x)       	scanf("%d", &x)
+#define bug(X)      	cout << #X << ": " << X << "\n"
+#define SET(DP)         memset(DP, -1, sizeof DP)
+#define CLEAR(arr)      memset(arr , 0 , sizeof arr)
+#define endl            "\n"
+using namespace std;
+
+const double pi  = acos(-1.0);
+const double eps = 1e-12;
+
+struct point
+{	
+	double x, y;
+	point(){ x = y = 0; }
+	point(double _x, double _y) {
+		x = _x , y = _y;
+	}
+    point operator + (const point& other) const {
+       return point(x + other.x, y + other.y) ;
+    }
+    point operator - (const point& other) const {
+       return point(x - other.x, y - other.y) ;
+    }
+    point operator = (const point& other) const {
+       return point(other.x, other.y) ;
+    }
+    void read() { cin >> x >> y; }
+};
+
+inline double dist2(point a, point b) {
+	return ((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y));
+}
+
+inline double dist(point a, point b) {
+	return sqrt(dist2(a, b));
+}
+
+inline double DotProduct(point a, point b, point p) {
+	return ((b.x - a.x) * (p.x - a.x)) + ((b.y - a.y) * (p.y - a.y));
+}
+
+inline double getAreaTriangle(point a, point b, point c) {
+	return fabs(0.5 * ( (a.x * b.y) + (b.x * c.y) + (c.x * a.y) - (a.x * c.y) - (c.x * b.y) - (b.x * a.y) ));
+}
+
+inline double CrossProduct(point a, point b, point p) {
+	return ((b.x - a.x) * (p.y - a.y)) - ((b.y - a.y) * (p.x - a.x));
+	// Positive if (AB ^ AP > 0) && (AB ^ AP < 180)
+	// negetive if (AB ^ AP > 180) && (AB ^ AP < 360)
+	// Zero if (AB ^ AP == 0 == 180 == 360)
+}
+
+double ProjectionInsideTheRayOrOutside(point A , point B , point P) {
+  return 1.0 * DotProduct(A , B , P) / dist2(A , B);
+  // Be CareFul About the infinity (Divide By Zero).
+}
+
+point PerpendicularpointQ(point A , point B , point P) {
+  double multiple = ProjectionInsideTheRayOrOutside(A , B ,P);
+  return point(A.x + multiple * (B.x - A.x) , A.y + multiple * (B.y - A.y));
+}
+
+double PointToSegment(point A , point B , point P) {
+  double InOut = ProjectionInsideTheRayOrOutside(A , B , P);
+  point Q;
+  if(InOut <= 0) Q = A;
+  else if(InOut >= 1) Q = B;
+  else Q = PerpendicularpointQ(A , B , P);
+  return dist(P , Q);
+}
+
+double SegmentSegmentIntersect(point A1 , point A2 , point B1 , point B2) {
+  return ( min(A1.x , A2.x) <= max(B1.x , B2.x) && min(A1.y , A2.y) <= max(B1.y , B2.y) &&
+           min(B1.x , B2.x) <= max(A1.x , A2.x) && min(B1.y , B2.y) <= max(A1.y , A2.y) &&
+           CrossProduct(A1 , A2 , B1) * CrossProduct(A1 , A2 , B2) <= 0 &&
+           CrossProduct(B1 , B2 , A1) * CrossProduct(B1 , B2 , A2) <= 0 );
+}
+
+double angle(point a, point b, point p) {
+	double res = 1.0 * DotProduct(a, b, p) / sqrt(1.0 * dist2(a, b) * dist2(a, p));
+	if(res >=  1.0) res =  1.0;
+	if(res <= -1.0) res = -1.0;
+	res = acos(1.0 * res);
+	if(CrossProduct(a , b , p) < 0) res = pi + pi - res; // if(angle is between [0, 2pi) )
+	return res;
+}
+
+double toRadian(double deg) {
+	return (deg * pi / 180.0);
+}
+
+double dist_inPolar(double r1 , double theta1 , double r2 , double theta2) {
+	// Theta is always in Radian
+	return dist( point(r1 * cos(theta1) , r1 * sin(theta1)) , point(r2 * cos(theta2) , r2 * sin(theta2)) );
+}
+
+int main ( )
+{
+    cout << setprecision(12) << fixed;
+    
+}
