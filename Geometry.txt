@@ -1,14 +1,5 @@
 #include<bits/stdc++.h>
 
-#define pb      	push_back
-#define LL      	long long
-#define INF     	1234567899
-#define si(x) 		scanf("%d", & x)
-#define bug(X) 		cout << #X << ": " << X << "\n"
-#define SET(DP) 	memset(DP, -1, sizeof DP)
-#define CLEAR(arr) 	memset(arr, 0, sizeof arr)
-#define endl 		"\n"
-
 using namespace std;
 
 const double pi = acos(-1.0);
