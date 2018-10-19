@@ -26,6 +26,51 @@ struct point {
     }
 };
 
+struct line
+{
+	double a, b, c;
+	line(){}
+	line(double _a, double _b, double _c) {
+		a = _a , b = _b , c = _c;
+	}
+	line(point one, point two) {
+		a = two.y - one.y;
+		b = one.x - two.x;
+		c = (one.y * two.x) - (one.x * two.y);
+	}
+
+	double DistFromApoint2Line(point p) {
+		return ( fabs(a * p.x + b * p.y + c) * 1.0 / sqrt(a * a + b * b) );
+	}
+
+	bool intersectTwoLine(line two, point &p, bool &SameOrNot) {
+		double dv = a * two.b - two.a * b;
+		if(dv == 0.0) {
+			SameOrNot = ( two.a * b == a * two.b &&  two.a * c == a * two.c && two.b * c == b * two.c );
+			// if(SameOrNot == true) Lines Are Same
+			// else Lines Are Parallel
+			return false;
+		}
+		p.x = (b * two.c - c * two.b) * 1.0 / dv;
+		p.y = (c * two.a - a * two.c) * 1.0 / dv;
+		return true;
+	}
+
+	double placeTheValueXY(point x) {
+		double v = (1.0 * a * x.x + b * x.y + c);
+		if(v == 0) return 0;
+		if(v < 0) return -1; //Anti clockwise
+		return +1;
+	}
+
+	line perpLine(point x) {
+		return line(b , -a , (a * x.y - b * x.x) );
+	}
+	void read() {
+       scanf("%lf %lf %lf", &a, &b, &c);
+    }
+};
+
 inline double dist2(point a, point b) {
     return ((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y));
 }
@@ -95,5 +140,7 @@ double dist_inPolar(double r1, double theta1, double r2, double theta2) {
 
 int main() {
     cout << setprecision(12) << fixed;
-
+    cerr << setprecision(12) << fixed;
+    
+    
 }
