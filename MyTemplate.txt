@@ -18,6 +18,7 @@
 #define rall(x) (x).rbegin() , (x).rend()
 #define siii(x, y, z) si(x) , si(y) , si(z)
 #define mem(a , b) memset((a), (b), sizeof(a))
+#define D(x)    cout << #x " = " << (x) << endl
 #define FOR(i , n) for(int i = 0 ; i < n ; i++)
 #define FOR1(i , n) for(int i = 1 ; i <= n ; i++)
 #define _ceil(n, a) ((n)%(a)==0?((n)/(a)):((n)/(a)+1))
@@ -48,10 +49,30 @@ const int MAXN = 50002;
 //     return res % mod;
 // }
 
+// inline int bitcount(int x) {
+// 	int count = 0;
+// 	__asm__ volatile ("POPCNT %1, %0;"
+// 			:"=r" (count)
+// 			:"r" (x)
+// 			:
+// 		);
+// 	return count;
+// }
+
+// int SET(int N,int pos){return N=N | (1<<pos);}
+// int RESET(int N,int pos){return N= N & ~(1<<pos);}
+// bool CHECK(int N,int pos){return (bool)(N & (1<<pos));}
+
+
 /************************************** Code Starts **************************************/ 
 
 
 int main() {	
+
+	// ios::sync_with_stdio(false);
+	// cin.tie(nullptr);
+	// cout << setprecision(10) << fixed;
+	// cerr << setprecision(10) << fixed;
 
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
