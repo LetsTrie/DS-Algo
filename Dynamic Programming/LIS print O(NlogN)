@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+#define LL long long 
+using namespace std;
+
+int main () {
+	int N;
+  cin >> N;
+	int arr[N];
+	for(int i = 0 ; i < N ; i++) {
+		cin >> arr[i];
+	}
+	int prev[N + 1];
+	memset(prev , 0 ,sizeof prev);
+
+	int own[N + 1];
+	memset(own, 0 , sizeof own);
+
+	vector<int> temp;
+	for(int i = 0 ; i < N ; i++) {
+		vector<int>:: iterator id = lower_bound(temp.begin() , temp.end() , arr[i]);
+		if(id == temp.end()) {
+			temp.push_back(arr[i]);
+			int len = temp.size();
+			if(len == 1) prev[i] = i, own[0] = i;
+			else prev[i] = own[len - 2], own[len - 1] = i;
+		}
+		else { 
+			int idx = id - temp.begin();
+			temp[idx] = arr[i];
+			if(idx)prev[i] = own[idx - 1], own[idx] = i;
+			else prev[i] = i, own[0] = i;
+		}
+	}
+	int done = own[ (int)temp.size() - 1 ];
+	deque<int> dq;
+	while(true) {
+		dq.push_front(arr[done]);
+		if(done == prev[done]) break;
+		done = prev[done];
+	}
+	for(int i = 0 ; i < dq.size() ; i++) {
+		cout << dq[i] << " ";
+	}
+}
